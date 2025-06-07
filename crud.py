@@ -58,18 +58,25 @@ def get_top_vs_constituencies(session: Session, state: str):
         }
         for row in rows
     ]
-def get_party_distribution(session: Session, state: str, year: int):
-    results = session.execute(
-        # your SQLAlchemy query here
-    ).fetchall()
 
-    # Clean the results before returning
+def get_party_distribution(session: Session, state: str, year: int):
+    stmt = (
+        select(
+            ConstituencyAnalytics.party,
+            func.sum(ConstituencyAnalytics.votes).label("votes")
+        ).where(
+            ConstituencyAnalytics.state == state,
+            ConstituencyAnalytics.election_year == year
+        ).group_by(ConstituencyAnalytics.party)
+    )
+    results = session.execute(stmt).all()
+
     cleaned = []
     for row in results:
-        party = row.party if row.party is not None else "Unknown"  # or skip the row entirely
+        party = row[0] if row[0] is not None else "Unknown"
         cleaned.append({
             "party": party,
-            "votes": row.votes
+            "votes": row[1]
         })
 
     return cleaned
