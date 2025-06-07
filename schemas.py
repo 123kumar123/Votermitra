@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 # Schema for Top VS Constituency data
 class ConstituencyData(BaseModel):
@@ -26,10 +27,9 @@ class TurnoutChart(BaseModel):
     class Config:
         orm_mode = True
 
-# Schema for Party Distribution (seats won)
 class PartyDistribution(BaseModel):
-    party: str
-    seats: int
+    party: Optional[str]  # <- change from `str` to `Optional[str]`
+    votes: int
 
     class Config:
         orm_mode = True

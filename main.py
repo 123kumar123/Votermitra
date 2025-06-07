@@ -56,10 +56,13 @@ def top_vs(state: str, session: Session = Depends(get_session)):
 @app.get("/party-distribution", response_model=List[PartyDistribution])
 def party_distribution(state: str, year: int, session: Session = Depends(get_session)):
     try:
-        return crud.get_party_distribution(session, state, year)
+        data = crud.get_party_distribution(session, state, year)
+        print(f"Returned data: {data}")  # Debug log
+        return data
     except Exception as e:
         print(f"Error in /party-distribution: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,6 +1,7 @@
 from sqlalchemy import select, func, desc
 from sqlalchemy.orm import Session
 from models import ConstituencyAnalytics
+from typing import Optional
 
 def get_margin_chart(session: Session, year: int, election_type: str):
     result = session.execute(
@@ -57,19 +58,18 @@ def get_top_vs_constituencies(session: Session, state: str):
         }
         for row in rows
     ]
-
 def get_party_distribution(session: Session, state: str, year: int):
-    result = session.execute(
-        select(
-            ConstituencyAnalytics.partywin,
-            func.count().label("seats")
-        ).where(
-            ConstituencyAnalytics.state == state,
-            ConstituencyAnalytics.election_year == year
-        ).group_by(ConstituencyAnalytics.partywin)
-    )
-    rows = result.all()
-    return [
-        {"party": row[0], "seats": row[1]}
-        for row in rows
-    ]
+    results = session.execute(
+        # your SQLAlchemy query here
+    ).fetchall()
+
+    # Clean the results before returning
+    cleaned = []
+    for row in results:
+        party = row.party if row.party is not None else "Unknown"  # or skip the row entirely
+        cleaned.append({
+            "party": party,
+            "votes": row.votes
+        })
+
+    return cleaned
