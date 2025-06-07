@@ -1,9 +1,9 @@
-from sqlalchemy.future import select
-from sqlalchemy import func, desc
+from sqlalchemy import select, func, desc
+from sqlalchemy.orm import Session
 from models import ConstituencyAnalytics
 
-async def get_margin_chart(session, year: int, election_type: str):
-    result = await session.execute(
+def get_margin_chart(session: Session, year: int, election_type: str):
+    result = session.execute(
         select(
             ConstituencyAnalytics.constituency,
             ConstituencyAnalytics.winning_margin
@@ -18,8 +18,8 @@ async def get_margin_chart(session, year: int, election_type: str):
         for row in rows
     ]
 
-async def get_turnout_chart(session, year: int, election_type: str, state: str):
-    result = await session.execute(
+def get_turnout_chart(session: Session, year: int, election_type: str, state: str):
+    result = session.execute(
         select(
             ConstituencyAnalytics.constituency,
             ConstituencyAnalytics.percentage
@@ -35,9 +35,8 @@ async def get_turnout_chart(session, year: int, election_type: str, state: str):
         for row in rows
     ]
 
-
-async def get_top_vs_constituencies(session, state: str):
-    result = await session.execute(
+def get_top_vs_constituencies(session: Session, state: str):
+    result = session.execute(
         select(
             ConstituencyAnalytics.constituency,
             ConstituencyAnalytics.winners,
@@ -59,9 +58,8 @@ async def get_top_vs_constituencies(session, state: str):
         for row in rows
     ]
 
-
-async def get_party_distribution(session, state: str, year: int):
-    result = await session.execute(
+def get_party_distribution(session: Session, state: str, year: int):
+    result = session.execute(
         select(
             ConstituencyAnalytics.partywin,
             func.count().label("seats")
@@ -75,4 +73,3 @@ async def get_party_distribution(session, state: str, year: int):
         {"party": row[0], "seats": row[1]}
         for row in rows
     ]
-
