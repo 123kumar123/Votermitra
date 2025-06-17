@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float,Text
 from database import Base
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -20,9 +20,10 @@ class ConstituencyAnalytics(Base):
     third_position = Column(String(100))
     fourth_position = Column(String(100))
     partywin = Column(String(100))
-    
-class Master(Base):
-    __tablename__ = "master"
+
+
+class MasterTable(Base):
+    __tablename__ = "master_table"
 
     id = Column(Integer, primary_key=True, index=True)
     electors = Column(Integer)
@@ -46,6 +47,7 @@ class Master(Base):
     electtype = Column(String(50))
     category = Column(String(50))
 
+
 class PartyDetails(Base):
     __tablename__ = "party_details"
 
@@ -58,8 +60,9 @@ class PartyDetails(Base):
     party_symbol = Column(String(255))
     manifesto = Column(Text)
 
-class PartyAnalyticsTableAggregate(Base):
-    __tablename__ = "party_analytics_table_aggregate"
+
+class PartyAnalyticsAggregate(Base):
+    __tablename__ = "party_analytics_aggregate"
 
     id = Column(Integer, primary_key=True, index=True)
     seats_con = Column(Integer)
@@ -73,16 +76,16 @@ class PartyAnalyticsTableAggregate(Base):
     party_pres = Column(String(255))
     party_status = Column(String(50))
 
+
 class Candidate(Base):
     __tablename__ = "candidates"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    constituency = Column(String)
-    party = Column(String)
-    image_url = Column(String)
+    name = Column(String(255))
+    constituency = Column(String(255))
+    party = Column(String(255))
+    image_url = Column(String(255))
     contested = Column(Integer)
     won = Column(Integer)
     win_loss_ratio = Column(Integer)
-    election_year = Column(String)
-
+    election_year = Column(String(4)) 

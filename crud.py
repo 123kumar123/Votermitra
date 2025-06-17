@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from models import ConstituencyAnalytics
 from typing import Optional
 from sqlalchemy import text
+from models import MasterTable
+from sqlalchemy import distinct
 
 from sqlalchemy.orm import Session
 from sqlalchemy import func
@@ -118,3 +120,21 @@ def get_party_cards_with_seats(db: Session):
         ]
     except Exception as e:
         raise e
+
+def get_all_states(db: Session):
+    try:
+        return db.query(distinct(MasterTable.state)).all()
+    except Exception as e:
+        raise Exception(f"Error fetching states: {str(e)}")
+
+def get_all_years(db: Session):
+    try:
+        return db.query(distinct(MasterTable.year)).order_by(MasterTable.year.desc()).all()
+    except Exception as e:
+        raise Exception(f"Error fetching years: {str(e)}")
+
+def get_all_election_types(db: Session):
+    try:
+        return db.query(distinct(MasterTable.election_type)).all()
+    except Exception as e:
+        raise Exception(f"Error fetching election types: {str(e)}")

@@ -81,7 +81,7 @@ class TurnoutChange(BaseModel):
     previous: float
     diff: float
 
-class RepetitiveCandidate(BaseModel):
+class PartyCount(BaseModel):
     party: str
     count: int
 
@@ -90,7 +90,7 @@ class ComparativeAnalysis(BaseModel):
     congress_seats: SeatChange
     bjp_vote_share: VoteShareChange
     voter_turnout: TurnoutChange
-    repetitive_candidates: List[RepetitiveCandidate]
+    repetitive_candidates: List[PartyCount]
 
 class CandidateSchema(BaseModel):
     name: str
@@ -100,6 +100,19 @@ class CandidateSchema(BaseModel):
     contested: int
     won: int
     win_loss_ratio: int
+
+    class Config:
+        orm_mode = True
+
+class PartyCard(BaseModel):
+    party: str
+    seats: int
+    color: str
+class PartyShare(BaseModel):
+    party_name: str
+    seats_won: int
+    seats_contested: int
+    percentage: float  # Or whatever fields are relevant
 
     class Config:
         orm_mode = True

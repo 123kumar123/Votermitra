@@ -93,6 +93,38 @@ def get_party_cards(db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/Constituency_analytics/margin-comparison")
+def get_margin_comparison(year: int, election_type: str, db: Session = Depends(get_db)):
+    try:
+        return crud.get_top_margin_constituencies(db, year, election_type)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/constituency_analytics/party-seat-distribution", response_model=list[schemas.PartyShare])
+def seat_distribution(elect_type: str, year: int, state: str = None, db: Session = Depends(get_db)):
+    try:
+        return crud.get_party_seat_distribution(db, elect_type, year, state)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/constituency_analytics/voter-turnout-comparison")
+def voter_turnout(state: str, year: int, election_type: str, db: Session = Depends(get_db)):
+    try:
+        return crud.get_top_voter_turnout_constituencies(db, state, year, election_type)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/constituency_analytics/party-vote-share", response_model=list[schemas.PartyShare])
+def vote_share(elect_type: str, year: int, state: str = None, db: Session = Depends(get_db)):
+    try:
+        return crud.get_party_vote_share(db, elect_type, year, state)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+
+
 
 
 
