@@ -92,3 +92,15 @@ class ComparativeAnalysis(BaseModel):
     voter_turnout: TurnoutChange
     repetitive_candidates: List[RepetitiveCandidate]
 
+class CandidateSchema(BaseModel):
+    name: str
+    constituency: str
+    party: str
+    image_url: str
+    contested: int
+    won: int
+    win_loss_ratio: int
+
+    class Config:
+        orm_mode = True
+

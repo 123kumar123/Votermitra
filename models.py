@@ -72,3 +72,17 @@ class PartyAnalyticsTableAggregate(Base):
     party_symbol = Column(String(255))
     party_pres = Column(String(255))
     party_status = Column(String(50))
+
+class Candidate(Base):
+    __tablename__ = "candidates"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    constituency = Column(String)
+    party = Column(String)
+    image_url = Column(String)
+    contested = Column(Integer)
+    won = Column(Integer)
+    win_loss_ratio = Column(Integer)
+    election_year = Column(String)
+
