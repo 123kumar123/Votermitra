@@ -2,6 +2,9 @@ from sqlalchemy import Column, Integer, String, Float,Text
 from database import Base
 from sqlalchemy.ext.declarative import declarative_base
 
+from sqlalchemy import Column, Integer, String, Float, Text
+from database import Base
+
 class ConstituencyAnalytics(Base):
     __tablename__ = "constituency_analytics"
 
@@ -88,4 +91,20 @@ class Candidate(Base):
     contested = Column(Integer)
     won = Column(Integer)
     win_loss_ratio = Column(Integer)
-    election_year = Column(String(4)) 
+    election_year = Column(String(4))
+
+
+class CandidateAnalytics(Base):
+    __tablename__ = "candidate_analytics"
+
+    id = Column(Integer, primary_key=True, index=True)
+    candidate_name = Column(String(255))  
+    votes = Column(Integer)
+
+
+class VSRulingParty(Base):
+    __tablename__ = "vs_ruling_party"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    state = Column(String(100))  
+    ruling_party = Column(String(100))  
