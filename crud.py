@@ -5,7 +5,8 @@ from typing import Optional
 from sqlalchemy import text
 from models import MasterTable
 from sqlalchemy import distinct
-
+from models import CandidateAnalytics
+from models import VSRulingParty
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from models import PartyAnalyticsAggregate, PartyDetails
@@ -138,3 +139,38 @@ def get_all_election_types(db: Session):
         return db.query(distinct(MasterTable.election_type)).all()
     except Exception as e:
         raise Exception(f"Error fetching election types: {str(e)}")
+    
+
+
+def get_top_candidates(db: Session, year: int, house_type: str, limit: int = 5):
+    return (
+        db.query(CandidateAnalytics)
+        .filter(CandidateAnalytics.year == year, CandidateAnalytics.house_type == house_type)
+        .order_by(CandidateAnalytics.win_loss_ratio.desc())
+        .limit(limit)
+        .all()
+    )
+def get_top_candidates(db: Session, state: str, year: int, house_type: str):
+    return db.execute(
+        """
+        SELECT 
+            candidate_name,
+            party_name,
+            constituency,
+            state,
+            total_votes,
+            victory_margin,
+            vote_percentage
+        FROM candidate_analytics
+        WHERE state = :state
+          AND election_year = :year
+          AND house_type = :house_type
+        ORDER BY vote_percentage DESC
+        LIMIT 5;
+        """,
+        {"state": state, "year": year, "house_type": house_type}
+    ).fetchall()
+
+def get_all_vs_ruling_parties(db: Session):
+    return db.query(VSRulingParty).all()
+

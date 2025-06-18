@@ -117,3 +117,88 @@ class PartyShare(BaseModel):
     class Config:
         orm_mode = True
 
+
+class CandidateOut(BaseModel):
+    name: str
+    constituency: str
+    party: str
+    elections_contested: int
+    elections_won: int
+    win_loss_ratio: float
+
+    class Config:
+        orm_mode = True
+class CandidateOut(BaseModel):
+    candidate_name: str
+    party_name: str
+    constituency: str
+    state: str
+    total_votes: int
+    victory_margin: int
+    vote_percentage: float
+
+    class Config:
+        orm_mode = True
+
+class PartySeatShare(BaseModel):
+    party: str
+    seats: float  # or int
+
+class PartyVoteShare(BaseModel):
+    party: str
+    vote_share: float
+
+class LokSabhaSummaryOut(BaseModel):
+    total_constituencies: int
+    voter_turnout: float
+    leading_party: str
+    government: str
+    seat_distribution: List[PartySeatShare]
+    vote_share_distribution: List[PartyVoteShare]
+
+class SummaryStats(BaseModel):
+    constituencies: int
+    voter_turnout: float
+    leading_party: str
+    government: str
+
+class PartySeatShare(BaseModel):
+    party: str
+    seats: int
+    percentage: float
+
+class PartyVoteShare(BaseModel):
+    party: str
+    vote_share: float
+
+class YearlyData(BaseModel):
+    year: int
+    bjp: float
+    congress: float
+    others: float
+
+class PartyPerformancePoint(BaseModel):
+    year: int
+    bjp: float
+    congress: float
+    others: float
+
+class AgeDistributionPoint(BaseModel):
+    age_group: str
+    count: int
+
+class NewPartiesIndependentsPoint(BaseModel):
+    year: int
+    new_parties: int
+    independents: int
+
+class VSRulingPartyOut(BaseModel):
+    state: str
+    cm_name: str
+    party_in_power: str
+    last_election_year: int
+    next_poll_year: int
+    total_seats: int
+
+    class Config:
+        orm_mode = True
